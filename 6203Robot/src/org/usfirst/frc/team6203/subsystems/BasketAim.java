@@ -22,6 +22,7 @@ public class BasketAim extends IterativeRobot {
 	
 
 	public void switchAim(Joystick xbox) {
+		int angle;
 		int trigCount = 0;
 		while (trigCount < 4) {
 			if (xbox.getTrigger()) {
@@ -34,22 +35,23 @@ public class BasketAim extends IterativeRobot {
 
 			switch (trigCount) {
 			case 0:
-				setAngle1();
+				angle = Constants.PRESET_1_ANGLE;
 				break;
 			case 1:
-				setAngle2();
+				angle = Constants.PRESET_2_ANGLE;
 				break;
 			case 2:
-				setAngle3();
+				angle = Constants.PRESET_3_ANGLE;
 				break;
 			case 3:
-				setAngle4();
+				angle = Constants.PRESET_4_ANGLE;
 				break;
 			default:
 				trigCount = 0;
-				setAngle1();
+				angle = Constants.PRESET_1_ANGLE;
 				break;
 			}
+			adjustAngle(angle);
 		}
 	}
 	
@@ -57,28 +59,11 @@ public class BasketAim extends IterativeRobot {
 		//TODO
 	}
 
-	public void setAngle1() {
-		while (pot.get() != Constants.PRESET_1_ANGLE) {
-			Hardware.basketMotor.set(pot.get() < Constants.PRESET_1_ANGLE ? 0.1 : -0.1);
+	public void adjustAngle(int angle) {
+		while (pot.get() != angle) {
+			Hardware.basketMotor.set(pot.get() < angle ? 0.1 : -0.1);
 		}
 	}
 
-	public void setAngle2() {
-		while (pot.get() != Constants.PRESET_2_ANGLE) {
-			Hardware.basketMotor.set(pot.get() < Constants.PRESET_2_ANGLE ? 0.1 : -0.1);
-		}
-	}
-
-	public void setAngle3() {
-		while (pot.get() != Constants.PRESET_3_ANGLE) {
-			Hardware.basketMotor.set(pot.get() < Constants.PRESET_3_ANGLE ? 0.1 : -0.1);
-		}
-	}
-
-	public void setAngle4() {
-		while (pot.get() != Constants.PRESET_4_ANGLE) {
-			Hardware.basketMotor.set(pot.get() < Constants.PRESET_4_ANGLE ? 0.1 : -0.1);
-		}
-	}
 
 }
