@@ -30,23 +30,44 @@ public class Robot extends IterativeRobot {
 
 	BasketAim bAim = new BasketAim((AnalogPotentiometer) Hardware.kPotentiometer);
 
-	NetworkTable table = NetworkTable.getTable("GRIP/myContoursReport");
+	NetworkTable table, table2;
+
 
 	double Kp = 0.03;
 
 	public Robot() {
-
+		table = NetworkTable.getTable("GRIP/myContoursReport");
+		table2 = NetworkTable.getTable("GRIP/mySize");
 	}
 
 	public void robotInit() {
-
+		//Subject to change kekmao
+		while (true) {
+			double cY = table.getNumber("centerX");
+			double cX = table.getNumber("centerY");
+			System.out.println("Center X: " + cX);
+			System.out.println("Center Y: " + cY);
+			System.out.println();
+			Timer.delay(1);
+		}
 	}
 
 	/**
 	 * This function is called periodically during autonomous
 	 */
 	public void autonomousPeriodic() {
-
+		//Check if turning is right
+		//Add potentiometer vertical aim
+		while (table.getNumber("centerX") != table2.getNumber("x") / 2) {
+			if (table.getNumber("centerX") < table2.getNumber("x") / 2) {
+				// Right turn
+				Hardware.kDrive.drive(0.1, 1.0);
+			} else {
+				// Left turn
+				Hardware.kDrive.drive(0.1, -1.0);
+			}
+		}
+		//Gyro not working?
 		Hardware.kGyro.reset();
 		while (isAutonomous()) {
 			double angle = Hardware.kGyro.getAngle(); // get current heading
